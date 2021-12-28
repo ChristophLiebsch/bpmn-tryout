@@ -1,106 +1,50 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>My first bpmn-plugin with side bar</title>
+<head>
+  <title>bpmn-js modeler demo</title>
 
-    <!-- required modeler styles -->
-    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@8.8.3/dist/assets/diagram-js.css">
-    <link rel="stylesheet" href="https://unpkg.com/bpmn-js@8.8.3/dist/assets/bpmn-font/css/bpmn.css">
+  <link rel="stylesheet" href="vendor/bpmn-js/assets/diagram-js.css" />
+  <link rel="stylesheet" href="vendor/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <div class="content" id="js-drop-zone">
 
-    <!-- modeler distro -->
-    <script src="https://unpkg.com/bpmn-js@8.8.3/dist/bpmn-modeler.development.js"></script>
-
-    <!-- needed for this example only -->
-    <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></scrip
-  </head>
-  <body class="">
-    <div id="div-container"><div class="bjs-container" style="width: 100%; height: 100%; position: relative;">
+    <div class="message intro">
+      <div class="note">
+        Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.
+      </div>
     </div>
 
-    <button id="save-button">print to console</button>
+    <div class="message error">
+      <div class="note">
+        <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
 
-    <script>
+        <div class="details">
+          <span>cause of the problem</span>
+          <pre></pre>
+        </div>
+      </div>
+    </div>
 
-      var diagramUrl = 'https://cdn.staticaly.com/gh/bpmn-io/bpmn-js-examples/dfceecba/starter/diagram.bpmn';
+    <div class="canvas" id="js-canvas"></div>
+  </div>
 
-      // modeler instance
-      var bpmnModeler = new BpmnJS({
-        container: '#div-container',
-        keyboard: {
-          bindTo: window
-        }
-      });
+  <ul class="buttons">
+    <li>
+      download
+    </li>
+    <li>
+      <a id="js-download-diagram" href title="download BPMN diagram">
+        BPMN diagram
+      </a>
+    </li>
+    <li>
+      <a id="js-download-svg" href title="download as SVG image">
+        SVG image
+      </a>
+    </li>
+  </ul>
 
-      /**
-       * Save diagram contents and print them to the console.
-       */
-      async function exportDiagram() {
-
-        try {
-
-          var result = await bpmnModeler.saveXML({ format: true });
-
-          alert('Diagram exported. Check the developer tools!');
-
-          console.log('DIAGRAM', result.xml);
-        } catch (err) {
-
-          console.error('could not save BPMN 2.0 diagram', err);
-        }
-      }
-
-      /**
-       * Open diagram in our modeler instance.
-       *
-       * @param {String} bpmnXML diagram to display
-       */
-      async function openDiagram(bpmnXML) {
-
-        // import diagram
-        try {
-
-          await bpmnModeler.importXML(bpmnXML);
-
-          // access modeler components
-          var canvas = bpmnModeler.get('canvas');
-          var overlays = bpmnModeler.get('overlays');
-
-
-          // zoom to fit full viewport
-          canvas.zoom('fit-viewport');
-
-        } catch (err) {
-
-          console.error('could not import BPMN 2.0 diagram', err);
-        }
-      }
-
-
-      // load external diagram file via AJAX and open it
-      $.get(diagramUrl, openDiagram, 'text');
-
-      // wire save button
-      $('#save-button').click(exportDiagram);
-    </script>
-    <!--
-      Thanks for trying out our BPMN toolkit!
-
-      This example uses the pre-built distribution of the bpmn-js modeler.
-      Consider rolling your own distribution to have more flexibility
-      regarding which features to include.
-
-      Checkout our advanced examples section to learn more:
-      * https://github.com/bpmn-io/bpmn-js-examples#advanced
-
-      To get a bit broader overview over how bpmn-js works,
-      follow our walkthrough:
-      * https://bpmn.io/toolkit/bpmn-js/walkthrough/
-
-      Related starters:
-      * https://raw.githubusercontent.com/bpmn-io/bpmn-js-examples/starter/viewer.html
-    -->
-  
-
-<svg id="helper-svg" width="0" height="0" style="visibility: hidden; position: fixed"></svg>
-  </body>
+  <script src="app.js"></script>
 </html>
